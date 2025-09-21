@@ -5,27 +5,323 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="icon" href="assets/resources/images/calas_blancas.png" type="image/x-icon">
     <title>Flowers</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arial:wght@300;400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Elementos celestiales de fondo */
+        .sky-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Estrellas de fondo */
+        .star {
+            position: absolute;
+            background: #FFFFFF;
+            border-radius: 50%;
+            width: 2px;
+            height: 2px;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .star:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 15%; left: 30%; animation-delay: 0.5s; }
+        .star:nth-child(3) { top: 25%; right: 20%; animation-delay: 1s; }
+        .star:nth-child(4) { top: 35%; left: 70%; animation-delay: 1.5s; }
+        .star:nth-child(5) { top: 30%; right: 40%; animation-delay: 2s; }
+        .star:nth-child(6) { top: 40%; left: 15%; animation-delay: 2.5s; }
+        .star:nth-child(7) { top: 45%; right: 60%; animation-delay: 0.3s; }
+        .star:nth-child(8) { top: 50%; left: 40%; animation-delay: 0.8s; }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Contenido principal */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 60px 40px;
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .greetings {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            letter-spacing: 8px;
+        }
+
+        .greetings > span {
+            display: inline-block;
+            animation: glow 2.5s ease-in-out infinite;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                color: #FFD700;
+                text-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700, 0 0 80px #FFD700;
+                transform: scale(1);
+            }
+            50% {
+                color: #FFA500;
+                text-shadow: 0 0 30px #FFA500, 0 0 60px #FFA500, 0 0 120px #FFA500;
+                transform: scale(1.1);
+            }
+        }
+
+        .greetings > span:nth-child(1) { animation-delay: 0s; }
+        .greetings > span:nth-child(2) { animation-delay: 0.2s; }
+        .greetings > span:nth-child(3) { animation-delay: 0.4s; }
+        .greetings > span:nth-child(4) { animation-delay: 0.6s; }
+        .greetings > span:nth-child(5) { animation-delay: 0.8s; }
+
+        .description {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            line-height: 1.6;
+            opacity: 0.9;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .button {
+            position: relative;
+        }
+
+        .botones {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .botones::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .botones:hover::before {
+            left: 100%;
+        }
+
+        .botones:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .botones a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Flores decorativas flotantes */
+        .floating-flower {
+            position: absolute;
+            color: #FFD700;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-flower:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-flower:nth-child(2) {
+            top: 20%;
+            right: 8%;
+            animation-delay: 2s;
+        }
+
+        .floating-flower:nth-child(3) {
+            bottom: 15%;
+            left: 10%;
+            animation-delay: 4s;
+        }
+
+        .floating-flower:nth-child(4) {
+            bottom: 25%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 0.6;
+            }
+        }
+
+        /* Media queries para responsividad */
+        @media screen and (max-width: 768px) {
+            .content {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+            
+            .greetings {
+                font-size: 3rem;
+                letter-spacing: 4px;
+            }
+            
+            .description {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+            }
+            
+            .botones {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .greetings {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .description {
+                font-size: 1rem;
+            }
+            
+            .botones {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Cambio de fondo según la hora */
+        .morning {
+            background: linear-gradient(135deg, #87CEEB 0%, #FFFFFF 100%);
+        }
+
+        .afternoon {
+            background: linear-gradient(135deg, #FFA500 0%, #FF4500 100%);
+        }
+
+        .night {
+            background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+        }
+    </style>
 </head>
 
 <body>
-    <div class="greetings">
-        <span>H</span>
-        <span>o</span>
-        <span>l</span>
-        <span>a</span>
-        <span>!</span>
+    <!-- Elementos celestiales de fondo -->
+    <div class="sky-elements">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
     </div>
-    <div class="description">
-        <span>ESTE DETALLE ES PARA TI :)</span>
+
+    <!-- Flores flotantes -->
+    <div class="floating-flower">🌸</div>
+    <div class="floating-flower">🌼</div>
+    <div class="floating-flower">🌻</div>
+    <div class="floating-flower">🌺</div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="greetings">
+            <span>H</span>
+            <span>o</span>
+            <span>l</span>
+            <span>a</span>
+            <span>!</span>
+        </div>
+        <div class="description">
+            <span>ESPERO ESTO TE GUSTE, FRESITA</span>
+        </div>
+        <div class="button">
+            <button class="botones">
+                <a href="assets/html/flower.html">DALE CLIC</a>
+            </button>
+        </div>
     </div>
-    <div class="button">
-        <button class="botones">
-            <a href="assets/html/flower.html" style="color: #fff;">CLICK AQUÍ</a>
-        </button>
-    </div>
+
+    <script>
+        // Cambiar fondo según la hora del día
+        const hour = new Date().getHours();
+        const body = document.body;
+
+        if (hour >= 6 && hour < 12) {
+            // Mañana
+            body.classList.add('morning');
+        } else if (hour >= 12 && hour < 18) {
+            // Tarde
+            body.classList.add('afternoon');
+        } else {
+            // Noche (mantener el gradiente por defecto)
+            body.classList.add('night');
+        }
+    </script>
 </body>
 
 </html>
